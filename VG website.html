@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Verdant Group</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+<style>
+  :root {
+    --green-900: #173404;
+    --green-800: #27500A;
+    --green-700: #3B6D11;
+    --green-600: #639922;
+    --green-100: #C0DD97;
+    --green-50: #EAF3DE;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; color: #1a1a1a; background: #fff; margin: 0; }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .nav-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 1.25rem; height: 64px;
+  }
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 1.1rem; font-weight: 600; color: var(--green-800);
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a {
+    font-size: 0.9rem; font-weight: 500; color: #374151;
+    text-decoration: none; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--green-700); }
+  .nav-cta {
+    background: var(--green-700); color: #fff;
+    padding: 8px 18px; border-radius: 6px;
+    font-size: 0.875rem; font-weight: 500;
+    text-decoration: none; transition: background 0.2s;
+    white-space: nowrap;
+  }
+  .nav-cta:hover { background: var(--green-800); }
+
+  /* HAMBURGER */
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    background: none; border: none; cursor: pointer; padding: 4px;
+  }
+  .hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: #374151; border-radius: 2px;
+    transition: all 0.3s;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* MOBILE MENU */
+  .mobile-menu {
+    display: none; flex-direction: column;
+    background: #fff; border-top: 1px solid #e5e7eb;
+    padding: 1rem 1.25rem 1.5rem;
+    gap: 1rem;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-size: 1rem; font-weight: 500; color: #374151;
+    text-decoration: none; padding: 0.4rem 0;
+    border-bottom: 1px solid #f3f4f6;
+  }
+  .mobile-menu a:last-child { border-bottom: none; }
+  .mobile-menu .mob-cta {
+    background: var(--green-700); color: #fff;
+    text-align: center; padding: 12px;
+    border-radius: 8px; margin-top: 0.5rem;
+    font-weight: 600; border-bottom: none;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #f9fafb 0%, var(--green-50) 100%);
+    padding: 80px 1.25rem 60px;
+    text-align: center;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--green-50); color: var(--green-700);
+    border: 1px solid var(--green-100);
+    font-size: 0.75rem; font-weight: 500; letter-spacing: 0.05em;
+    padding: 4px 14px; border-radius: 999px; margin-bottom: 1.25rem;
+    text-transform: uppercase;
+  }
+  .hero h1 {
+    font-size: clamp(1.8rem, 5vw, 3.5rem);
+    font-weight: 700; line-height: 1.15;
+    color: #111827; max-width: 720px; margin: 0 auto 1rem;
+  }
+  .hero h1 span { color: var(--green-700); }
+  .hero p {
+    font-size: clamp(0.95rem, 2vw, 1.1rem); color: #4b5563;
+    max-width: 560px; margin: 0 auto 2rem; line-height: 1.7;
+  }
+  .hero-actions { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--green-700); color: #fff;
+    padding: 12px 24px; border-radius: 8px;
+    font-size: 0.95rem; font-weight: 500; text-decoration: none;
+    transition: background 0.2s;
+  }
+  .btn-primary:hover { background: var(--green-800); }
+  .btn-secondary {
+    background: #fff; color: #374151;
+    border: 1px solid #d1d5db;
+    padding: 12px 24px; border-radius: 8px;
+    font-size: 0.95rem; font-weight: 500; text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--green-700); color: var(--green-700); }
+
+  /* STATS */
+  .stats {
+    background: var(--green-800); color: #fff;
+    padding: 2.5rem 1.25rem;
+  }
+  .stats-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem; text-align: center;
+  }
+  .stat-num { font-size: clamp(1.6rem, 4vw, 2rem); font-weight: 700; color: var(--green-100); }
+  .stat-label { font-size: 0.82rem; color: #d1fae5; margin-top: 2px; }
+
+  /* SECTION COMMON */
+  section { padding: 60px 1.25rem; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+  .section-tag {
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--green-700); margin-bottom: 0.5rem;
+  }
+  .section-title {
+    font-size: clamp(1.4rem, 3vw, 2.2rem); font-weight: 700;
+    color: #111827; margin-bottom: 0.75rem;
+  }
+  .section-sub {
+    font-size: 0.95rem; color: #6b7280; max-width: 580px; line-height: 1.7;
+  }
+
+  /* SERVICES */
+  #services { background: #f9fafb; }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem; margin-top: 2.5rem;
+  }
+  .service-card {
+    background: #fff; border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    padding: 1.5rem;
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+  .service-card:hover {
+    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+    border-color: var(--green-100);
+  }
+  .service-icon {
+    width: 46px; height: 46px; border-radius: 10px;
+    background: var(--green-50);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1rem;
+  }
+  .service-icon svg { width: 22px; height: 22px; stroke: var(--green-700); fill: none; stroke-width: 1.8; }
+  .service-card h3 { font-size: 0.95rem; font-weight: 600; color: #111827; margin-bottom: 0.4rem; }
+  .service-card p { font-size: 0.85rem; color: #6b7280; line-height: 1.65; }
+
+  /* CONTACT */
+  #contact { background: #fff; }
+  .contact-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 3rem; margin-top: 2.5rem; align-items: start;
+  }
+  .contact-info p { font-size: 0.95rem; color: #4b5563; line-height: 1.75; margin-bottom: 1.5rem; }
+  .contact-detail {
+    display: flex; align-items: flex-start; gap: 12px; margin-bottom: 1rem;
+  }
+  .contact-detail-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: var(--green-50);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .contact-detail-icon svg { width: 16px; height: 16px; stroke: var(--green-700); fill: none; stroke-width: 1.8; }
+  .contact-detail-text { font-size: 0.875rem; color: #374151; line-height: 1.5; }
+  .contact-detail-label { font-size: 0.75rem; color: #9ca3af; margin-bottom: 1px; }
+
+  /* FORM */
+  .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 4px; }
+  .form-group label { font-size: 0.8rem; font-weight: 500; color: #374151; }
+  .form-group input, .form-group textarea, .form-group select {
+    padding: 10px 14px; border: 1px solid #d1d5db;
+    border-radius: 8px; font-size: 0.9rem; color: #111827;
+    background: #fff; transition: border-color 0.2s;
+    font-family: inherit; outline: none; width: 100%;
+  }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+    border-color: var(--green-600);
+  }
+  .form-group textarea { resize: vertical; min-height: 120px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .submit-btn {
+    background: var(--green-700); color: #fff;
+    padding: 12px; border: none; border-radius: 8px;
+    font-size: 0.95rem; font-weight: 500; cursor: pointer;
+    transition: background 0.2s; font-family: inherit; width: 100%;
+  }
+  .submit-btn:hover { background: var(--green-800); }
+
+  /* FOOTER */
+  footer {
+    background: #111827; color: #9ca3af;
+    padding: 1.5rem 1.25rem; text-align: center;
+    font-size: 0.82rem; line-height: 1.6;
+  }
+  footer span { color: var(--green-100); }
+
+  /* TOAST */
+  .toast {
+    display: none; position: fixed; bottom: 1.5rem; right: 1.25rem; left: 1.25rem;
+    background: var(--green-800); color: #fff;
+    padding: 12px 20px; border-radius: 8px; font-size: 0.9rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15); z-index: 100;
+    text-align: center;
+  }
+  .toast.show { display: block; animation: fadeIn 0.3s; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* RESPONSIVE */
+  @media (min-width: 640px) {
+    .stats-inner { grid-template-columns: repeat(4, 1fr); }
+    .toast { left: auto; max-width: 320px; }
+  }
+  @media (min-width: 768px) {
+    .hamburger { display: none !important; }
+    .nav-links { display: flex !important; }
+    .nav-cta { display: inline-block !important; }
+  }
+  @media (max-width: 767px) {
+    .hamburger { display: flex; }
+    .nav-links { display: none; }
+    .nav-cta { display: none; }
+    .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .form-row { grid-template-columns: 1fr; }
+    .services-grid { grid-template-columns: 1fr; }
+    .hero { padding: 50px 1.25rem 40px; }
+    section { padding: 50px 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#home" class="logo">
+      <div style="width:42px; height:42px; flex-shrink:0;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="42" height="42">
+          <rect width="400" height="400" rx="22" fill="#002800"/>
+          <path d="M 262,0 A 138,138 0 0,1 400,138" stroke="white" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <text x="28" y="372" font-family="Arial, 'Helvetica Neue', sans-serif" font-weight="900" font-size="98" fill="white" letter-spacing="-1">VG</text>
+        </svg>
+      </div>
+      Verdant Group
+    </a>
+    <div class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#services">Services</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a href="#contact" class="nav-cta">Get in Touch</a>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#home" onclick="closeMenu()">Home</a>
+    <a href="#services" onclick="closeMenu()">Services</a>
+    <a href="#contact" onclick="closeMenu()">Contact</a>
+    <a href="#contact" class="mob-cta" onclick="closeMenu()">Get in Touch</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="home" class="hero">
+  <div class="hero-badge">Electrical Engineering</div>
+  <h1>Powering Progress Through <span>Engineering</span></h1>
+  <p>Verdant Group delivers expert electrical engineering solutions — from design and analysis to project management — built on integrity, innovation, and results.</p>
+  <div class="hero-actions">
+    <a href="#services" class="btn-primary">Explore Our Services</a>
+    <a href="#contact" class="btn-secondary">Contact Us</a>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stats-inner">
+    <div>
+      <div class="stat-num">25+</div>
+      <div class="stat-label">Years of Experience</div>
+    </div>
+    <div>
+      <div class="stat-num">100+</div>
+      <div class="stat-label">Projects Completed</div>
+    </div>
+    <div>
+      <div class="stat-num">50+</div>
+      <div class="stat-label">Industry Clients</div>
+    </div>
+    <div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-inner">
+    <div class="section-tag">What We Do</div>
+    <div class="section-title">Our Engineering Services</div>
+    <div class="section-sub">We provide a comprehensive range of electrical engineering services tailored to commercial, industrial, and infrastructure projects.</div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        </div>
+        <h3>Electrical System Design</h3>
+        <p>Full-scope design services for power distribution, control systems, and low-voltage installations across commercial and industrial facilities.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+        </div>
+        <h3>Engineering Consulting</h3>
+        <p>Strategic advisory and technical consulting for project planning, regulatory compliance, and peer reviews on complex electrical installations.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="section-tag">Reach Us</div>
+    <div class="section-title">Get in Touch</div>
+    <div class="section-sub">Have a project in mind or need a consultation? Our team is ready to help. Fill out the form and we'll respond within one business day.</div>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <p>Whether you're planning a new installation, need a technical review, or want to explore how Verdant Group can support your next project, we'd love to hear from you.</p>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">
+            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <div class="contact-detail-label">Address</div>
+            <div class="contact-detail-text">1523 E Yandell Dr.<br>El Paso, TX 79902</div>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4a2 2 0 0 1 1.99-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <div>
+            <div class="contact-detail-label">Phone</div>
+            <div class="contact-detail-text">+1 (915) 540-8591</div>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div>
+            <div class="contact-detail-label">Email</div>
+            <div class="contact-detail-text">info@verdantgroup.com</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <form class="contact-form" onsubmit="handleSubmit(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label>First Name</label>
+              <input type="text" placeholder="Jane" required />
+            </div>
+            <div class="form-group">
+              <label>Last Name</label>
+              <input type="text" placeholder="Smith" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" placeholder="jane@company.com" required />
+          </div>
+          <div class="form-group">
+            <label>Service of Interest</label>
+            <select>
+              <option value="">Select a service...</option>
+              <option>Electrical System Design</option>
+              <option>Engineering Consulting</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Message</label>
+            <textarea placeholder="Tell us about your project or inquiry..."></textarea>
+          </div>
+          <button type="submit" class="submit-btn">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>&copy; 2026 <span>Verdant Group</span>. All rights reserved. &nbsp;|&nbsp; Electrical Engineering Consultants</p>
+</footer>
+
+<div class="toast" id="toast">Message sent! We'll be in touch soon.</div>
+
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+  });
+  function closeMenu() {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+  }
+  function handleSubmit(e) {
+    e.preventDefault();
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3500);
+    e.target.reset();
+  }
+</script>
+</body>
+</html>
